@@ -1,4 +1,3 @@
 require("options")
-require('plugins')
-require('lazy').setup('plugins')
-
+require("plugins")
+require("lazy").setup("plugins")
