@@ -1,10 +1,50 @@
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
-return{}
+vim.g.conform_log_level = "debug"
+vim.g.conform_log_file = vim.fn.stdpath "cache" .. "/conform.log"
+
+return {
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre", -- uncomment for format on save
+    --   formatters_by_ft = {
+    --   python = { "ruff_format" },
+    -- },
+    -- formatters = {
+    --   ruff_format = {
+    --     command = "ruff",
+    --     args = { "format", "$FILENAME" },
+    --     stdin = false,
+    --   },
+    -- },
+    -- format_on_save = {
+    --   lsp_fallback = true,
+    --   timeout_ms = 500,
+    -- },
+    opts = require "configs.conform",
+  },
+
+  -- These are some examples, uncomment them if you want to see them work!
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require "configs.lspconfig"
+    end,
+  },
+
+  -- test new blink
+  -- { import = "nvchad.blink.lazyspec" },
+
+  -- {
+  -- 	"nvim-treesitter/nvim-treesitter",
+  -- 	opts = {
+  -- 		ensure_installed = {
+  -- 			"vim", "lua", "vimdoc",
+  --      "html", "css"
+  -- 		},
+  -- 	},
+  -- },
+  {
+    "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp", -- optional, for advanced regex
+    dependencies = { "rafamadriz/friendly-snippets" },
+  },
+}
